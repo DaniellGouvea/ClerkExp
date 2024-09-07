@@ -1,20 +1,35 @@
 import { Button } from "@/components/Button"
-import { useAuth, useUser } from "@clerk/clerk-expo"
-import { StyleSheet, Text, View } from "react-native"
+import { useAuth, useUser, ClerkProvider } from "@clerk/clerk-expo"
+import { StyleSheet, Text, View, Image } from "react-native"
 
-export default function Home(){
-
+export default function Home() {
     const { user } = useUser()
     const { signOut } = useAuth()
 
-    return(
-        <View>
-            <Text>Olá, {user?.fullName}</Text>
+    if (!user) {
+        return (
+            <View style={styles.container}>
+                <Text>Você não está autenticado.</Text>
+            </View>
+        )
+    }
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.userInfo}>
+                {user.imageUrl && (
+                    <Image 
+                        source={{ uri: user.imageUrl }} 
+                        style={styles.profileImage} 
+                    />
+                )}
+                <Text style={styles.text}>Olá, {user.fullName}</Text>
+            </View>
             <Button
-            icon="exit"
-            title="Sair"
-            onPress={() => signOut()}
-            ></Button>
+                icon="exit"
+                title="Sair"
+                onPress={() => signOut()}
+            />
         </View>
     )
 }
@@ -26,7 +41,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 12
-
+    },
+    userInfo: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12
+    },
+    profileImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25
     },
     text: {
         fontSize: 18,
