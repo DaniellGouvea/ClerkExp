@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
+import { Text, View, Platform } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
 import { useOAuth } from "@clerk/clerk-expo";
+import { Link } from "expo-router";
+
 import { Button } from "@/components/Button";
+import { styles } from "./styles";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -51,19 +54,9 @@ export default function SignIn() {
         onPress={onGoogleSignIn}
         isLoading={isLoading}
       />
+      <Link href={"./cadastro"}>
+        <Text>Ainda não tem uma conta? Cadastre-se</Text>
+      </Link>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 32,
-    justifyContent: "center",
-    gap: 12,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-});

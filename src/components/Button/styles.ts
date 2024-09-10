@@ -2,13 +2,20 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container:{
-        width: "100%",
         flexDirection: 'row',
         justifyContent: "center",
         gap: 7,
-        backgroundColor: "#000",
         padding: 22,
         borderRadius: 16
+    },
+    v1:{
+        width: "100%",
+        backgroundColor: "#000"
+    },
+    v2:{
+        width: "50%",
+        backgroundColor: "#000",
+        marginTop: 20
     },
     icon:{
         color:'#fff',
