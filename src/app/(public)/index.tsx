@@ -55,7 +55,7 @@ export default function SignIn() {
         isLoading={isLoading}
       />
       <Link href={"./cadastro"}>
-        <Text>Ainda não tem uma conta? Cadastre-se</Text>
+        <Text>Ainda não tem uma conta? Cadastre-se1111</Text>
       </Link>
     </View>
   );
