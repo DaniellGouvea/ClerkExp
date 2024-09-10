@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     },
     title: {
       fontSize: 22,
-      fontWeight: "bold",
+      fontFamily: "poppins-regular",
     },
     input: {
         backgroundColor: "#d9d9d9",
