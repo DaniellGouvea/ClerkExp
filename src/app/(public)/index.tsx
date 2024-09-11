@@ -11,7 +11,8 @@ import { styles } from "./styles";
 WebBrowser.maybeCompleteAuthSession();
 
 export default function SignIn() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
+  const [isLoadingHandle, setIsLoadingHandle] = useState(false);
   const googleOAuth = useOAuth({ strategy: "oauth_google" });
 
   const { setActive, isLoaded, signIn } = useSignIn()
@@ -23,7 +24,7 @@ export default function SignIn() {
 
   async function onGoogleSignIn() {
     try {
-      setIsLoading(true);
+      setIsLoadingGoogle(true);
 
       const redirectUrl = Linking.createURL("/");
       const oAuthFlow = await googleOAuth.startOAuthFlow({ redirectUrl });
@@ -31,11 +32,11 @@ export default function SignIn() {
       if (oAuthFlow.authSessionResult?.type === "success") {
         await oAuthFlow.setActive!({ session: oAuthFlow.createdSessionId });
       } else {
-        setIsLoading(false);
+        setIsLoadingGoogle(false);
       }
     } catch (error) {
       console.log(error)
-      setIsLoading(false);
+      setIsLoadingGoogle(false);
     }
   }
 
@@ -46,6 +47,7 @@ export default function SignIn() {
     }
 
     try {
+      setIsLoadingHandle(true)
       const signInResponse = await 
           signIn.create({
             identifier: emailAddress,
@@ -55,12 +57,14 @@ export default function SignIn() {
       if( signInResponse.status === "complete") {
         await setActive ( { session: signInResponse.createdSessionId } )
         router.replace('/')
+      }else {
+        setIsLoadingHandle(false)
       }
 
 
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2))
-
+      setIsLoadingHandle(false)
     }
   }
 
@@ -84,7 +88,7 @@ export default function SignIn() {
         icon="logo-google"
         title="Entrar com Google"
         onPress={onGoogleSignIn}
-        isLoading={isLoading}
+        isLoading={isLoadingGoogle}
       />
       <TextInput 
       value= {emailAddress}
@@ -108,6 +112,7 @@ export default function SignIn() {
       title="Entrar"
       variant="secondary"
       onPress={handleSignIn}
+      isLoading = {isLoadingHandle}
       ></Button>
       <Link href={"./cadastro"}>
         <Text>Ainda não tem uma conta? <Text style ={{fontWeight: "bold"}}> Cadastre-se </Text></Text>

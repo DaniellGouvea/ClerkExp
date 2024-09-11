@@ -23,7 +23,7 @@ function InicialLayout() {
   return isLoaded ? (
     <Slot />
   ) : (
-    <ActivityIndicator style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />
+    <ActivityIndicator style={{ flex: 1, justifyContent: "center", alignItems: "center"}} color={"#000"}/>
   );
 }
 
