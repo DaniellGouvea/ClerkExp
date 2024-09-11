@@ -20,20 +20,28 @@ export default function SignUpScreen() {
   const [code, setCode] = useState('')
 
   const onSignUpPress = async () => {
+    // Verifica se a biblioteca Clerk foi carregada
     if (!isLoaded) {
       return
     }
+
+    // Verifica se password e confirmPassword coincidem
     if(password === confirmPassword){
+
       try {
+        // Tenta criar uma conta
         await signUp.create({
           emailAddress,
           password,
           firstName
         })
 
+        // Inicia a verificação do Email
         await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
+        
 
         setPendingVerification(true)
+
       } catch (err: any) {
         console.error(JSON.stringify(err, null, 2))
       }
@@ -44,17 +52,18 @@ export default function SignUpScreen() {
   }
 
   const onPressVerify = async () => {
+    // Verifica se a biblioteca Clerk foi carregada
     if (!isLoaded) {
       return
     }
 
     
     try {
-      
+      // Tenta verificar o código de verificação 
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code,
       })
-
+      // Se bem sucedido a sessão é ativada
       if (completeSignUp.status === 'complete') {
         await setActive({ session: completeSignUp.createdSessionId })
         router.replace('/')
@@ -88,6 +97,7 @@ export default function SignUpScreen() {
             placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
           />
           <TextInput
+            autoCapitalize="none"
             value={password}
             placeholder="Senha"
             secureTextEntry={true}
@@ -96,6 +106,7 @@ export default function SignUpScreen() {
             placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
           />
           <TextInput
+            autoCapitalize="none"
             value={confirmPassword}
             placeholder="Confirmar Senha"
             secureTextEntry={true}
