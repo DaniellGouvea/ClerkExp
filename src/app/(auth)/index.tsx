@@ -1,10 +1,39 @@
 import { Button } from "@/components/Button"
 import { useAuth, useUser, ClerkProvider } from "@clerk/clerk-expo"
 import { StyleSheet, Text, View, Image } from "react-native"
+import {db}  from "../../../firebaseConfig"
+import { collection, addDoc, getDocs } from 'firebase/firestore'
+
 
 export default function Home() {
     const { user } = useUser()
     const { signOut } = useAuth()
+    
+
+    //Teste de implementação do Firestore
+    async function teste(){
+        try {
+            const docRef = await addDoc(collection(db, "users"),
+        {
+            first: "Gilberto",
+            middle: "Martins",
+            last: "de Oliveria",
+            born: 1983
+        })
+        const querySnapshot = await getDocs(collection(db, "users"))
+        querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`)
+        })
+
+        console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    }
+    
+
+    
+
 
     if (!user) {
         return (
@@ -29,6 +58,11 @@ export default function Home() {
                 icon="exit"
                 title="Sair"
                 onPress={() => signOut()}
+            />
+            <Button
+            icon="rainy"
+            title="teste"
+            onPress={teste}
             />
         </View>
     )
