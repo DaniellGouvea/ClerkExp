@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, View, Platform, TextInput } from "react-native";
+import { Text, View, Platform, TextInput, Image } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
 import { useOAuth, useSignIn } from "@clerk/clerk-expo";
@@ -7,6 +7,7 @@ import { ExpoRoot, Link, router } from "expo-router";
 
 import { Button } from "@/components/Button";
 import { styles } from "./styles";
+
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -83,6 +84,13 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>
+        Bem Vindo ao nosso E-Commerce
+      </Text>
+      <Image
+      style = {{width: 250, height: 250, marginBottom: -25}}
+      source={require('../../../assets/images/logo.png')}
+      />
       <Text style={styles.title}>Entrar</Text>
       <Button
         icon="logo-google"
@@ -96,6 +104,7 @@ export default function SignIn() {
       style ={[styles.input, { width: 250, marginTop: 20}]} 
       placeholder="Email"
       autoCapitalize="none"
+      placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
       ></TextInput>
 
       <TextInput 
@@ -105,6 +114,7 @@ export default function SignIn() {
       placeholder="Senha"
       secureTextEntry={true}
       autoCapitalize="none"
+      placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
       ></TextInput>
 
       <Button

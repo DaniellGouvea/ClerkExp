@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { TextInput, View, Alert } from 'react-native'
+import { TextInput, View, Alert, Text } from 'react-native'
 import { useSignUp } from '@clerk/clerk-expo'
-import { useRouter } from 'expo-router'
+import { useRouter, Link } from 'expo-router'
 
 
 import { Button } from '@/components/Button'
 import { styles } from './styles'
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 export default function SignUpScreen() {
@@ -80,46 +81,56 @@ export default function SignUpScreen() {
     <View style={{flex: 1, alignItems: "center", justifyContent: "center", gap: 10}}>
       {!pendingVerification && (
         <>
-        <TextInput
-            autoCapitalize="none"
-            value={firstName}
-            placeholder="Nome completo"
-            onChangeText={(firstName) => setFirstName(firstName)}
-            style={styles.input}
-            placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-          />
+          <View style={{position: "absolute", top: 17, left: 10}}>
+            <Link href={"/(public)"}>
+              <Ionicons name="arrow-back" size={50} color="black" />
+            </Link>
+          </View>
+        
+          <Text style={[styles.title, {bottom: 70}]}>
+            Crie Agora A Sua Conta
+          </Text>
+
           <TextInput
-            autoCapitalize="none"
-            value={emailAddress}
-            placeholder="Email"
-            onChangeText={(email) => setEmailAddress(email)}
-            style={styles.input}
-            placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-          />
-          <TextInput
-            autoCapitalize="none"
-            value={password}
-            placeholder="Senha"
-            secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
-            style={styles.input}
-            placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-          />
-          <TextInput
-            autoCapitalize="none"
-            value={confirmPassword}
-            placeholder="Confirmar Senha"
-            secureTextEntry={true}
-            onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
-            style={styles.input}
-            placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-          />
-          <Button 
-          title="Cadastrar" 
-          onPress={onSignUpPress} 
-          icon='log-in-outline'
-          variant='secondary'
-          />
+              autoCapitalize="none"
+              value={firstName}
+              placeholder="Nome completo"
+              onChangeText={(firstName) => setFirstName(firstName)}
+              style={styles.input}
+              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+            />
+            <TextInput
+              autoCapitalize="none"
+              value={emailAddress}
+              placeholder="Email"
+              onChangeText={(email) => setEmailAddress(email)}
+              style={styles.input}
+              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+            />
+            <TextInput
+              autoCapitalize="none"
+              value={password}
+              placeholder="Senha"
+              secureTextEntry={true}
+              onChangeText={(password) => setPassword(password)}
+              style={styles.input}
+              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+            />
+            <TextInput
+              autoCapitalize="none"
+              value={confirmPassword}
+              placeholder="Confirmar Senha"
+              secureTextEntry={true}
+              onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+              style={styles.input}
+              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+            />
+            <Button 
+            title="Cadastrar" 
+            onPress={onSignUpPress} 
+            icon='log-in-outline'
+            variant='secondary'
+            />
         </>
       )}
       {pendingVerification && (

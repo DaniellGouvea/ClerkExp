@@ -15,9 +15,10 @@ export const styles = StyleSheet.create({
     },
     input: {
         backgroundColor: "#d9d9d9",
-        width: "50%",
+        width: "60%",
         height: 50,
         paddingLeft: 15,
+        marginBottom: 4,
         borderColor: "#000",
         borderWidth: 1,
         borderRadius: 15
