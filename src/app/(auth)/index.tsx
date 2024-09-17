@@ -1,14 +1,20 @@
 import { Button } from "@/components/Button"
 import { useAuth, useUser, ClerkProvider } from "@clerk/clerk-expo"
-import { StyleSheet, Text, View, Image } from "react-native"
-import {db}  from "../../../firebaseConfig"
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native"
+import {db}  from "../../firebaseConfig"
 import { collection, addDoc, getDocs } from 'firebase/firestore'
-
+import { createDocument, readDocuments } from "@/storage/firebaseOperations"
+import DataList from "@/components/teste"
 
 export default function Home() {
     const { user } = useUser()
     const { signOut } = useAuth()
     
+    const produto = {
+        nome: "blusa",
+        quantidade: 40,
+        preco: 40.6
+    }
 
     //Teste de implementação do Firestore
     async function teste(){
@@ -62,9 +68,12 @@ export default function Home() {
             <Button
             icon="rainy"
             title="teste"
-            onPress={teste}
+            //onPress={() => ()}
             />
+                <DataList/>
+            
         </View>
+
     )
 }
 
