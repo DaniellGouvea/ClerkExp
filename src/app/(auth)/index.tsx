@@ -1,32 +1,30 @@
 import { Button } from "@/components/Button"
 import { useAuth, useUser, ClerkProvider } from "@clerk/clerk-expo"
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native"
+import { StyleSheet, Text, View, Image, StatusBar} from "react-native"
 import {db}  from "../../firebaseConfig"
 import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { createDocument, readDocuments } from "@/storage/firebaseOperations"
-import DataList from "@/components/teste"
+import { ListaItens } from "@/components/listaItens"
+
 
 export default function Home() {
     const { user } = useUser()
     const { signOut } = useAuth()
     
     const produto = {
-        nome: "blusa",
+        nome: "Tênis leve e respirável com amortecimento extra para máxima performance em suas atividades físicas.",
         quantidade: 40,
-        preco: 40.6
+        preco: 40.6,
+        img: "https://blog.alterdata.com.br/wp-content/uploads/2022/12/tendenciaslojaderoupa.jpeg"
     }
 
     //Teste de implementação do Firestore
     async function teste(){
         try {
-            const docRef = await addDoc(collection(db, "users"),
-        {
-            first: "Gilberto",
-            middle: "Martins",
-            last: "de Oliveria",
-            born: 1983
-        })
-        const querySnapshot = await getDocs(collection(db, "users"))
+            const docRef = await addDoc(collection(db, "produto"),
+        produto
+    )
+        const querySnapshot = await getDocs(collection(db, "produto"))
         querySnapshot.forEach((doc) => {
             console.log(`${doc.id} => ${doc.data()}`)
         })
@@ -50,40 +48,43 @@ export default function Home() {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.userInfo}>
-                {user.imageUrl && (
-                    <Image 
-                        source={{ uri: user.imageUrl }} 
-                        style={styles.profileImage} 
-                    />
-                )}
-                <Text style={styles.text}>Olá, {user.fullName}</Text>
-            </View>
-            <Button
-                icon="exit"
-                title="Sair"
-                onPress={() => signOut()}
-            />
-            <Button
-            icon="rainy"
-            title="teste"
-            //onPress={() => ()}
-            />
-                <DataList/>
-            
-        </View>
+            <View style={styles.container}>
+                <View style={styles.userInfo}>
+                    {user.imageUrl && (
+                        <Image 
+                            source={{ uri: user.imageUrl }} 
+                            style={styles.profileImage} 
+                        />
+                    )}
+                    <Text style={styles.text}>Olá, {user.fullName}</Text>
+                </View>
+                <Button
+                    icon="exit"
+                    title="Sair"
+                    onPress={() => signOut()}
+                />
+                    {/* <Button
+                    icon="accessibility"
+                    title="teste"
+                    onPress={teste}
+                    /> */}
+
+                    <ListaItens/>
+                </View>
 
     )
 }
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 32,
+        paddingTop: StatusBar.currentHeight,
         justifyContent: "center",
         alignItems: "center",
-        gap: 12
+        gap: 12,
+        backgroundColor: '#ebebeb'
     },
     userInfo: {
         flexDirection: "row",
