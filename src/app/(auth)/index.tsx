@@ -7,15 +7,21 @@ import {
     StatusBar} from "react-native"
 import {db}  from "../../firebaseConfig"
 import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 
 import { Button } from "@/components/Button"
 import { ListaItens } from "@/components/listaItens"
+import { Ionicons } from "@expo/vector-icons";
 
 
-export default function Home() {
-    const { user } = useUser()
-    const { signOut } = useAuth()
+
+
+export function Home() {
     
+    const { user } = useUser()
+
     const produto = {
         nome: "Tênis leve e respirável com amortecimento extra para máxima performance em suas atividades físicas.",
         quantidade: 40,
@@ -55,31 +61,82 @@ export default function Home() {
     return (
 
             <View style={styles.container} >
-                <View style={styles.userInfo}>
-                    {user.imageUrl && (
+                
+                    <ListaItens/>
+                </View>         
+
+    )
+}
+
+function SettingsScreen() {
+    const { user } = useUser()
+    const { signOut } = useAuth()
+
+    function cutAfterSecondSpace(str:string) {
+        const spaceIndex = str.indexOf(' ', str.indexOf(' ') + 1); // Encontra o segundo espaço
+        return spaceIndex !== -1 ? str.slice(0, spaceIndex) : str; // Corta a string ou retorna a original
+    }
+
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.userInfo}>
+                    {user?.imageUrl && (
                         <Image 
                             source={{ uri: user.imageUrl }} 
                             style={styles.profileImage} 
                         />
                     )}
-                    <Text style={styles.text}>Olá, {user.fullName}</Text>
+                    <Text style={styles.text}>Olá, {user?.fullName ? cutAfterSecondSpace(user.fullName) : ''}</Text>
                 </View>
                 <Button
                     icon="exit"
                     title="Sair"
                     onPress={() => signOut()}
                 />
-                    {/* <Button
-                    icon="accessibility"
-                    title="teste"
-                    onPress={teste}
-                    /> */}
+      </View>
+    );
+  }
+  
+  const Tab = createBottomTabNavigator();
+  
+  export default function App() {
+    const { user } = useUser()
 
-                    <ListaItens/>
-                </View>         
+    return (
+      <NavigationContainer independent= {true}>
+        <Tab.Navigator screenOptions={{
+              headerShown: false, // Remove a barra superior
+            }}>
 
-    )
-}
+          <Tab.Screen 
+          name="Inicio" 
+          component={Home} 
+          options={{
+            tabBarIcon:() => (
+                <Ionicons name="home-outline" size={22} color="black" />
+            )
+          }} 
+          />
+
+          <Tab.Screen 
+          name="Sua Conta" 
+          component={SettingsScreen} 
+          options={{
+            tabBarIcon:() => (
+                user?.imageUrl && (
+                    <Image 
+                        source={{ uri: user?.imageUrl }} 
+                        style={[styles.profileImage, {width: 22, height:22}]} 
+                    />
+                )
+            )
+          }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    );
+  }
+
 
 
 
