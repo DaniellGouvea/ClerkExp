@@ -1,9 +1,14 @@
-import { Button } from "@/components/Button"
 import { useAuth, useUser, ClerkProvider } from "@clerk/clerk-expo"
-import { StyleSheet, Text, View, Image, StatusBar} from "react-native"
+import { 
+    StyleSheet, 
+    Text, 
+    View, 
+    Image, 
+    StatusBar} from "react-native"
 import {db}  from "../../firebaseConfig"
 import { collection, addDoc, getDocs } from 'firebase/firestore'
-import { createDocument, readDocuments } from "@/storage/firebaseOperations"
+
+import { Button } from "@/components/Button"
 import { ListaItens } from "@/components/listaItens"
 
 
@@ -48,7 +53,8 @@ export default function Home() {
     }
 
     return (
-            <View style={styles.container}>
+
+            <View style={styles.container} >
                 <View style={styles.userInfo}>
                     {user.imageUrl && (
                         <Image 
@@ -70,7 +76,7 @@ export default function Home() {
                     /> */}
 
                     <ListaItens/>
-                </View>
+                </View>         
 
     )
 }

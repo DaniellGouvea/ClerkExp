@@ -1,15 +1,15 @@
 import { readDocuments } from "@/storage/firebaseOperations";
 import { Link } from "expo-router";
 import { DocumentData } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { 
   ActivityIndicator, 
   View, 
   Text, 
-  FlatList, 
   Image, 
   StyleSheet,
-  Dimensions} from "react-native";
+  Dimensions,
+  RefreshControl,} from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { FlatGrid } from "react-native-super-grid";
 
@@ -19,8 +19,24 @@ import { FlatGrid } from "react-native-super-grid";
 export function ListaItens(){
 
   const [documents, setDocuments] = useState<DocumentData[]>([])
+
+  const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      
+      const fetchData = async () => {
+        const data = await readDocuments('produto')
+        setDocuments(data)
+      }
+  
+      fetchData()
+
+      setRefreshing(false);
+    }, 1000); // 1 segundos
+  }, []);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +66,11 @@ export function ListaItens(){
       keyExtractor={(item) => item.id}
       spacing={10}  // Espaçamento entre os itens
       renderItem={({ item }) => (
-        <Link href= '/(auth)\testeLink'>
+        <Link href = {{
+          
+          pathname: '/(auth)/products/[id]',
+          params: {id: item.id}
+          }}>
         <View style={styles.container}>
           
           <Image
@@ -68,6 +88,12 @@ export function ListaItens(){
         
       )}
       ListEmptyComponent={<Text>Nenhum documento encontrado.</Text>}
+      refreshControl={
+        <RefreshControl
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        />
+      }
     />
     </View>
   )
@@ -83,7 +109,7 @@ export function Descricao(item: DocumentData){
     return text;
   }
 
-  const nomeTruncado = truncateText(item["nome"],52);
+  const nomeTruncado = truncateText(item["nome"],50);
 
   return(
     <View style={styles.description}>
