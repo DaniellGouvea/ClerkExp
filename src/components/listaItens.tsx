@@ -53,7 +53,7 @@ export function ListaItens(){
   if (isLoading) {
     return (
       <View >
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#000" />
         <Text>Carregando dados...</Text>
       </View>
     );

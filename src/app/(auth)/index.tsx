@@ -106,6 +106,11 @@ function SettingsScreen() {
       <NavigationContainer independent= {true}>
         <Tab.Navigator screenOptions={{
               headerShown: false, // Remove a barra superior
+              tabBarActiveTintColor: "#000",
+              tabBarStyle: {
+                height: 50,
+                paddingTop: 5
+              }
             }}>
 
           <Tab.Screen 
@@ -114,7 +119,8 @@ function SettingsScreen() {
           options={{
             tabBarIcon:() => (
                 <Ionicons name="home-outline" size={22} color="black" />
-            )
+            ),
+
           }} 
           />
 
@@ -129,6 +135,7 @@ function SettingsScreen() {
                         style={[styles.profileImage, {width: 22, height:22}]} 
                     />
                 )
+            
             )
           }}
           />
