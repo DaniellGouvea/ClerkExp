@@ -1,4 +1,5 @@
 import { readDocument } from "@/storage/firebaseOperations"
+import { useUser } from "@clerk/clerk-expo"
 import { useLocalSearchParams } from "expo-router"
 import { DocumentData } from "firebase/firestore"
 import { useEffect, useState } from "react"
@@ -11,6 +12,8 @@ export default function TesteLink(){
     const { id } = useLocalSearchParams()
 
     const idString = id.toString()
+    
+    
 
     useEffect(() => {
 
@@ -96,7 +99,9 @@ function DescriptionProduto (document:DocumentData) {
                 >
                 {document["quantidade"]? `Estoque: ${document["quantidade"]}` : 'Estoque: 00'}
             </Text>
-
+            <Text>
+                Codigo do Vendedor: {document["ownerId"]}
+            </Text>
         </View>
     )
 }

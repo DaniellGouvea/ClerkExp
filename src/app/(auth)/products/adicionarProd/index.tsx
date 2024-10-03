@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/Button";
 import { createDocument } from "@/storage/firebaseOperations";
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from "@clerk/clerk-expo";
 
 
 
@@ -16,6 +17,8 @@ type ProdutoType = {
 
 export default function AdicionarProd() {
     const navigation = useNavigation()
+    const { userId } = useAuth()
+
     const [image, setImage] = useState('');
     const [nome, setNome] = useState('');
     const [preco, setPreco] = useState('');
@@ -43,7 +46,7 @@ export default function AdicionarProd() {
         console.log(produto);
 
         // Enviar os dados para o banco de dados
-        createDocument('produto', produto)
+        createDocument('produto', produto, userId)
             .then(() => {
                 setIsLoading(false)
                 Alert.alert('Sucesso', 'Produto criado com sucesso!');

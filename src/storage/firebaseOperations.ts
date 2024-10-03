@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/clerk-expo";
 import { db } from "../firebaseConfig"
 
 import {
@@ -10,17 +11,24 @@ import {
     deleteDoc,
     DocumentData
 } from "firebase/firestore"
+import { Alert } from "react-native";
 
-export const createDocument = async <T extends DocumentData>(collectionName:string, data: T): Promise <string | void> => {
-
+export const createDocument = async <T extends DocumentData>(
+    collectionName: string,
+    data: T,
+    userId: string | null | undefined // Passando o userId como argumento
+  ): Promise<string | void> => {
     try {
-        const docRef = await addDoc(collection(db, collectionName), data)
-        console.log('Documento adicionado com ID:', docRef.id)
-        return docRef.id
+      const docRef = await addDoc(collection(db, collectionName), {
+        ...data,
+        ownerId: userId, // Usando o userId do argumento
+      });
+      console.log("Documento adicionado com ID:", docRef.id);
+      return docRef.id;
     } catch (error) {
-        console.error('Error ao adicionar documento', error)
+      console.error("Erro ao adicionar documento", error);
     }
-}
+  };
 
 export const readDocuments = async (collectionName:string): Promise<DocumentData[]> => {
     try {
@@ -58,23 +66,68 @@ export const readDocument = async (collectionName: string, docId:string ) : Prom
 }
 
 export const updateDocument = 
-    async <T extends DocumentData> (collectionName:string, docId:string, updatedData:T): Promise <void> =>{
+    async <T extends DocumentData> (
+        collectionName:string, 
+        docId:string, 
+        updatedData:T,
+        userId: string | null | undefined
+    ): Promise <void> =>{
 
         try {
             const docRef = doc(db, collectionName, docId)
-            await updateDoc(docRef, updatedData)
-            console.log('Documento atualizado com sucesso!')
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+            console.log("Documento não encontrado!");
+            return;
+            }
+
+            const docData = docSnap.data();
+
+            // Verificando se o usuário é o dono do documento
+            if (docData.ownerId !== userId) {
+            console.log("Você não tem permissão para atualizar este documento!");
+            Alert.alert("Error", "Você não tem permisão para editar esse produto")
+            return;
+            }
+
+            // Atualizando o documento
+            await updateDoc(docRef, updatedData);
+            Alert.alert('Sucesso', 'Produto editado com sucesso!');
+            console.log('Produto Editado com sucesso')
         } catch (error) {
             console.error('Error ao atualizar documento:', error)
         }
 
     }
 
-export const deleteDocument = async (collectionName:string, docId:string): Promise<void> => {
+export const deleteDocument = async (
+    collectionName:string, 
+    docId:string,
+    userId: string | null | undefined
+): Promise<void> => {
     try {
-        const docRef = doc(db, collectionName, docId)
-        await deleteDoc(docRef)
-        console.log('Documento deletado com sucesso!')
+        const docRef = doc(db, collectionName, docId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+        console.log("Documento não encontrado!");
+        return;
+        }
+
+        const docData = docSnap.data();
+
+        // Verificando se o usuário é o dono do documento
+        if (docData.ownerId !== userId) {
+        console.log("Você não tem permissão para deletar este documento!");
+        Alert.alert("Error", "Você não tem autorização pra deletar esse produto!")
+        return;
+        }
+
+        // Deletando o documento
+        await deleteDoc(docRef);
+        console.log("Documento deletado com sucesso!");
+        Alert.alert("Sucesso", "Produto deletado com Sucesso!")
     } catch (error) {
         console.log('Erro ao deletor documento:', error)
     }

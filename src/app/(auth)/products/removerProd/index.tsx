@@ -3,14 +3,17 @@ import { useState } from "react";
 import { styles } from "@/app/(public)/styles";
 import { Button } from "@/components/Button";
 import { deleteDocument } from "@/storage/firebaseOperations";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function removerProd(){
+    const { userId } = useAuth()
+
     const [id, setId] = useState('');
     const [isLoading, setIsLoading] = useState(false)
 
     function deleteProduto(id:string){
         setIsLoading(true)
-        deleteDocument("produto", id)
+        deleteDocument("produto", id, userId)
         .then(() =>{
             setIsLoading(false)
             setId('')
