@@ -12,7 +12,7 @@ export default function TesteLink(){
 
     const idString = id.toString()
 
-     useEffect(() => {
+    useEffect(() => {
 
          const fetchData = async () => {
             const data = await readDocument('produto', idString)
@@ -20,14 +20,18 @@ export default function TesteLink(){
          }
          
          fetchData()
-     }, [])
+    }, [])
 
     return (
         <View style={{flex:1, backgroundColor: '#ebebeb'}}>
             
             <ImageProduto {...document}/>
             <DescriptionProduto {...document} />
-            
+            <View style={{ justifyContent: "flex-start",alignItems: 'center', marginBottom: 20}}>
+                <Text style={{ textAlign: 'center' }} selectable>
+                    {idString}
+                </Text>
+            </View>
         </View>
     )
 }
@@ -92,6 +96,7 @@ function DescriptionProduto (document:DocumentData) {
                 >
                 {document["quantidade"]? `Estoque: ${document["quantidade"]}` : 'Estoque: 00'}
             </Text>
+
         </View>
     )
 }

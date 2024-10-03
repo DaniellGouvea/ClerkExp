@@ -14,6 +14,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Button } from "@/components/Button"
 import { ListaItens } from "@/components/listaItens"
 import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import { SettingsSection } from "@/components/SettingsSections";
+
 
 
 
@@ -78,8 +81,8 @@ function SettingsScreen() {
     }
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <View style={styles.userInfo}>
+      <View style={{flex: 1, alignItems: 'center',  paddingTop: StatusBar.currentHeight}}>
+        {/* <View style={styles.userInfo}>
                     {user?.imageUrl && (
                         <Image 
                             source={{ uri: user.imageUrl }} 
@@ -87,11 +90,24 @@ function SettingsScreen() {
                         />
                     )}
                     <Text style={styles.text}>Olá, {user?.fullName ? cutAfterSecondSpace(user.fullName) : ''}</Text>
-                </View>
-                <Button
+                </View> */}
+                {/* <Button
                     icon="exit"
                     title="Sair"
                     onPress={() => signOut()}
+                /> */}
+                <SettingsSection 
+                titulo="Adicionar Produto"
+                rota="/(auth)/products/adicionarProd"/>
+
+                <SettingsSection 
+                titulo="Editar Produto"
+                rota="/(auth)/products/editarProd"
+                />
+
+                <SettingsSection
+                titulo="Remover Produto"
+                rota="/(auth)/products/removerProd"
                 />
       </View>
     );
@@ -169,5 +185,5 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         fontWeight: "bold"
-    }
+    },
 })
