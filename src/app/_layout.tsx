@@ -35,7 +35,7 @@ export default function Layout() {
   });
 
   if (!fontsLoaded) {
-    return <ActivityIndicator style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
+    return <ActivityIndicator style={{ flex: 1, justifyContent: "center", alignItems: "center"}} color={"#000"} />;
   }
 
   return (
