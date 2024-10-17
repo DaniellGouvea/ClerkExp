@@ -101,12 +101,11 @@ function SettingsScreen() {
                     titulo="Remover Produto"
                     rota="/(auth)/products/removerProd"
                     />
-
-                    <Button
-                        icon="exit"
-                        title="Sair"
-                        onPress={() => signOut()}
-                    /> 
+                    
+                    <SettingsSection 
+                    titulo="Conta"
+                    rota="/(auth)/conta"
+                    />
 
                     {user?.imageUrl && (
                         <Image 
@@ -125,11 +124,11 @@ function SettingsScreen() {
             }
             {user?.unsafeMetadata.role == "user" && (
                 <>
-                    <Button
-                    icon="exit"
-                    title="Sair"
-                    onPress={() => signOut()}
-                /> 
+                    <SettingsSection 
+                    titulo="Conta"
+                    rota="/(auth)/conta"
+                    />
+                    
                     {user?.imageUrl && (
                         <Image 
                             source={{ uri: user.imageUrl }} 

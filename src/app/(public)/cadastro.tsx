@@ -116,13 +116,17 @@ export default function SignUpScreen() {
               style={[styles.roleButton, role === 'user' && styles.selectedRoleButton]}
               onPress={() => setRole('user')}
             >
-              <Text style={styles.roleButtonText}>User</Text>
+              <Text style={[styles.roleButtonText, 
+                            role === 'user' && 
+                            styles.selectedTextRole]}>Usúario</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.roleButton, role === 'admin' && styles.selectedRoleButton]}
               onPress={() => setRole('admin')}
             >
-              <Text style={styles.roleButtonText}>Admin</Text>
+              <Text style={[styles.roleButtonText, 
+                            role === 'admin' && 
+                            styles.selectedTextRole]}>Vendedor</Text>
             </TouchableOpacity>
           </View>
 
@@ -183,9 +187,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectedRoleButton: {
-    backgroundColor: '#007bff', // Altera a cor quando selecionado
-    borderColor: '#007bff',
+    backgroundColor: '#FB8108', // Altera a cor quando selecionado
+    borderColor: '#FB8107',
   },
+  selectedTextRole:{
+    fontSize: 16,
+    color: '#f1f1f1',
+  }
+  ,
   roleButtonText: {
     fontSize: 16,
     color: '#000',

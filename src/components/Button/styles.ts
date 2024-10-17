@@ -10,11 +10,11 @@ export const styles = StyleSheet.create({
     },
     v1:{
         width: "100%",
-        backgroundColor: "#000"
+        backgroundColor: "#FB8107"
     },
     v2:{
         width: "50%",
-        backgroundColor: "#000",
+        backgroundColor: "#FB8107",
         marginTop: 20
     },
     icon:{

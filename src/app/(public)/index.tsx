@@ -5,6 +5,7 @@ import * as Linking from "expo-linking";
 import { useOAuth, useSignIn } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -145,6 +146,8 @@ export default function SignIn() {
   );
 }
 
+const windowWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
@@ -218,8 +221,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   logo: {
-   width:400,
-    height:400
+    width: windowWidth, 
+    height: windowWidth, 
+    resizeMode: "contain", 
+    alignSelf: "center", 
   },
   icon: {
     marginRight: 8,
