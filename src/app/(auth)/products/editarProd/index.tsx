@@ -3,6 +3,7 @@ import { styles } from "@/app/(public)/styles";
 import { useState } from "react";
 import { Button } from "@/components/Button";
 import { readDocument, updateDocument } from "@/storage/firebaseOperations";
+import { useAuth } from "@clerk/clerk-expo";
 
 type ProdutoType = {
     img: string;
@@ -12,6 +13,8 @@ type ProdutoType = {
 };
 
 export default function EditProd() {
+    const { userId } = useAuth()
+
     const [image, setImage] = useState('');
     const [nome, setNome] = useState('');
     const [preco, setPreco] = useState('');
@@ -42,11 +45,9 @@ export default function EditProd() {
         console.log(produto);
 
 
-            updateDocument("produto", id, produto)
+            updateDocument("produto", id, produto, userId)
                 .then(() => {
                     setIsLoading(false)
-                    Alert.alert('Sucesso', 'Produto editado com sucesso!');
-                    console.log('Produto Editado com sucesso')
                     // Limpar os campos após a criação
                     setImage('');
                     setNome('');

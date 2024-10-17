@@ -1,16 +1,26 @@
 import { readDocument } from "@/storage/firebaseOperations"
-import { useLocalSearchParams } from "expo-router"
+import { useLocalSearchParams, useRouter } from "expo-router"
 import { DocumentData } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { Button, Text, View, Image, StatusBar } from "react-native"
+import {Text, View, Image, StatusBar} from "react-native"
+
+import { Button } from "@/components/Button"
+import BottomModal from "../../../components/modal"
+import { Ionicons } from "@expo/vector-icons"
+
 
 
 export default function TesteLink(){
+    const [modalVisible, setModalVisible] = useState(false);
 
     const [document, setDocument] = useState<DocumentData>()
     const { id } = useLocalSearchParams()
 
     const idString = id.toString()
+    
+    const statusBarHeight = StatusBar.currentHeight;
+    
+    const router = useRouter()
 
     useEffect(() => {
 
@@ -24,14 +34,33 @@ export default function TesteLink(){
 
     return (
         <View style={{flex:1, backgroundColor: '#ebebeb'}}>
-            
+
+            <Ionicons name="arrow-back"  size={24} color="#fff" style={{
+                position: 'absolute', 
+                top: statusBarHeight,              
+                left: 10,             
+                zIndex: 10, }} 
+                onPress={() => (router.back())}
+                />
             <ImageProduto {...document}/>
+
             <DescriptionProduto {...document} />
             <View style={{ justifyContent: "flex-start",alignItems: 'center', marginBottom: 20}}>
                 <Text style={{ textAlign: 'center' }} selectable>
                     {idString}
                 </Text>
             </View>
+            <Button
+            icon="bag-add-outline"
+            title="Comprar"
+            onPress={() => setModalVisible(true)}
+            />
+
+            <BottomModal  
+            visible ={modalVisible} 
+            onClose ={() => setModalVisible(false)}
+            idProduto = {id}
+            />
         </View>
     )
 }
@@ -96,7 +125,9 @@ function DescriptionProduto (document:DocumentData) {
                 >
                 {document["quantidade"]? `Estoque: ${document["quantidade"]}` : 'Estoque: 00'}
             </Text>
-
+            <Text>
+                Codigo do Vendedor: {document["ownerId"]}
+            </Text>
         </View>
     )
 }

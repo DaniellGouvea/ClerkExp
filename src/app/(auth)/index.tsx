@@ -83,32 +83,68 @@ function SettingsScreen() {
     return (
       <View style={{flex: 1, alignItems: 'center',  paddingTop: StatusBar.currentHeight}}>
         {/* <View style={styles.userInfo}>
+                    
+                </View> */}
+            {user?.unsafeMetadata.role == "admin" && (
+                <>
+                        
+                    <SettingsSection 
+                    titulo="Adicionar Produto"
+                    rota="/(auth)/products/adicionarProd"/>
+
+                    <SettingsSection 
+                    titulo="Editar Produto"
+                    rota="/(auth)/products/editarProd"
+                    />
+
+                    <SettingsSection
+                    titulo="Remover Produto"
+                    rota="/(auth)/products/removerProd"
+                    />
+                    
+                    <SettingsSection 
+                    titulo="Conta"
+                    rota="/(auth)/conta"
+                    />
+
                     {user?.imageUrl && (
                         <Image 
                             source={{ uri: user.imageUrl }} 
                             style={styles.profileImage} 
                         />
                     )}
-                    <Text style={styles.text}>Olá, {user?.fullName ? cutAfterSecondSpace(user.fullName) : ''}</Text>
-                </View> */}
-                {/* <Button
-                    icon="exit"
-                    title="Sair"
-                    onPress={() => signOut()}
-                /> */}
-                <SettingsSection 
-                titulo="Adicionar Produto"
-                rota="/(auth)/products/adicionarProd"/>
-
-                <SettingsSection 
-                titulo="Editar Produto"
-                rota="/(auth)/products/editarProd"
-                />
-
-                <SettingsSection
-                titulo="Remover Produto"
-                rota="/(auth)/products/removerProd"
-                />
+                    <Text 
+                    style={styles.text}>
+                        Olá, {user?.fullName ? cutAfterSecondSpace(user.fullName) : ''}
+                    </Text>
+                </>
+            )
+            
+            
+            }
+            {user?.unsafeMetadata.role == "user" && (
+                <>
+                    <SettingsSection 
+                    titulo="Conta"
+                    rota="/(auth)/conta"
+                    />
+                    
+                    {user?.imageUrl && (
+                        <Image 
+                            source={{ uri: user.imageUrl }} 
+                            style={styles.profileImage} 
+                        />
+                    )}
+                    <Text 
+                    style={styles.text}>
+                        Olá, {user?.fullName ? cutAfterSecondSpace(user.fullName) : ''}
+                    </Text>
+                </>
+            )
+            
+            
+            }
+                
       </View>
     );
   }
