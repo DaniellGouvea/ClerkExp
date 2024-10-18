@@ -1,3 +1,6 @@
+//Card de items para compra
+
+
 import { readDocuments } from "@/storage/firebaseOperations";
 import { Link } from "expo-router";
 import { DocumentData } from "firebase/firestore";
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
-    color: '#c21b1b',
+    color: '#fff',
     textAlign: 'left',
     marginTop: 'auto',
     paddingRight: 10,
