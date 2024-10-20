@@ -1,6 +1,3 @@
-//Card de items para compra
-
-
 import { readDocuments } from "@/storage/firebaseOperations";
 import { Link } from "expo-router";
 import { DocumentData } from "firebase/firestore";
@@ -24,13 +21,9 @@ export function ListaItens() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => { 
-      const fetchData = async () => {
-        const data = await readDocuments('produto');
-        setDocuments(data);
-      };
-  
-      fetchData();
+    setTimeout(async () => { 
+      const data = await readDocuments('produto');
+      setDocuments(data);
       setRefreshing(false);
     }, 1000);
   }, []);
@@ -50,7 +43,7 @@ export function ListaItens() {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
-        <Text>Carregando dados...</Text>
+        <Text style={styles.loadingText}>Carregando dados...</Text>
       </View>
     );
   }
@@ -58,54 +51,54 @@ export function ListaItens() {
   return (
     <View style={{ flex: 1 }}>
       <FlatGrid
-      itemDimension={Math.floor(width * 0.45)} // Ajuste de dimensão do item
-      data={documents}
-      keyExtractor={(item) => item.id}
-      spacing={10}
-      renderItem={({ item }) => (
-        <Link
-          href={{
-          pathname: '/(auth)/products/[id]',
-          params: { id: item.id },
-          }}>
-        <View style={styles.itemContainer}>
-          <Image
-            style={styles.image}
-            resizeMode="cover"
-            source={{ uri: item["img"] }}
+        itemDimension={Math.floor(width * 0.45)}
+        data={documents}
+        keyExtractor={(item) => item.id}
+        spacing={10}
+        renderItem={({ item }) => (
+          <Link
+            href={{
+              pathname: '/(auth)/products/[id]',
+              params: { id: item.id },
+            }}>
+            <View style={styles.itemContainer}>
+              <Image
+                style={styles.image}
+                resizeMode="cover"
+                source={{ uri: item["img"] || 'https://via.placeholder.com/150' }}
+              />
+              <Descricao {...item} />
+              <Text style={styles.buyButton}>Comprar</Text>
+            </View>
+          </Link>
+        )}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>Nenhum documento encontrado. Tente atualizar ou voltar mais tarde.</Text>
+        }
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
           />
-            <Descricao {...item} />
-        </View>
-        </Link>
-      )}
-      ListEmptyComponent={<Text>Nenhum documento encontrado.</Text>}
-      refreshControl={
-        <RefreshControl
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        />
-      }
-    />
+        }
+      />
     </View>
   );
 }
 
 export function Descricao(item: DocumentData) {
   function truncateText(text: string, maxLength: number): string {
-    if (text.length > maxLength) {
-      return text.slice(0, maxLength) + '…';
-    }
-    return text;
+    return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
   }
 
   const nomeTruncado = truncateText(item["nome"], 50);
 
   return (
     <View style={styles.description}>
-          <Text style={styles.itemName} allowFontScaling={false} numberOfLines={2} ellipsizeMode="tail">
-            {nomeTruncado}
-            </Text>
-          <Text style={styles.price} allowFontScaling={false}>R${item["preco"]}</Text>
+      <Text style={styles.itemName} allowFontScaling={false} numberOfLines={2} ellipsizeMode="tail">
+        {nomeTruncado}
+      </Text>
+      <Text style={styles.price} allowFontScaling={false}>R${item["preco"]}</Text>
     </View>
   );
 }
@@ -118,45 +111,55 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  loadingText: {
+    marginTop: 10,
+    fontSize: RFValue(14),
+    color: '#333',
+  },
   itemContainer: {
     backgroundColor: '#fff',
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
-    overflow: 'hidden',
-    width: width * 0.47,
+    borderRadius: 12,
     elevation: 2, 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     justifyContent: 'space-between',
+    padding: 10,
   },
   image: {
     width: '100%',
     height: height * 0.18,
+    borderRadius: 12,
   },
   description: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     flex: 1,
-    paddingTop: 10,
   },
   itemName: {
     fontSize: RFValue(12),
     fontWeight: 'bold',
     color: '#333',
-    flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
   },
   price: {
     fontSize: RFValue(14),
     fontWeight: 'bold',
+    color: '#f56e00', // Consider a contrasting color
+  },
+  emptyText: {
+    textAlign: 'center',
+    padding: 20,
+    fontSize: RFValue(16),
+    color: '#666',
+  },
+  buyButton: {
+    marginTop: 10,
+    backgroundColor: '#f56e00',
     color: '#fff',
-    textAlign: 'left',
-    marginTop: 'auto',
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingBottom: 10
+    textAlign: 'center',
+    paddingVertical: 8,
+    borderRadius: 5,
+    fontWeight: 'bold',
   },
 });

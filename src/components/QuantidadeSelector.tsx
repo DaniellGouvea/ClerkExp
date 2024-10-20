@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    fontSize: 14, // Texto do label menor
+    fontSize: 14,
     marginRight: 5,
   },
   selector: {
@@ -76,23 +76,23 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   button: {
-    padding: 5, // Menor padding para os botões
+    padding: 5, 
     backgroundColor: '#f1f1f1',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonPressed: {
-    backgroundColor: '#cccccc', // Cor de fundo quando o botão é pressionado
+    backgroundColor: '#cccccc', 
   },
   buttonText: {
-    fontSize: 16, // Tamanho da fonte dos botões reduzido
+    fontSize: 16, 
     textAlign: 'center',
   },
   input: {
-    paddingVertical: 5, // Menor padding vertical no input
+    paddingVertical: 5,
     textAlign: 'center',
-    width: 40, // Largura menor para o input
-    fontSize: 14, // Tamanho da fonte no input reduzido
+    width: 40, 
+    fontSize: 14, 
   },
 });
 
